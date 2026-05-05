@@ -1,0 +1,75 @@
+@model GestaPME.Util.ResultadoPaginado<GestaPME.Models.Ferias>
+@{
+    ViewData["Title"] = "Férias";
+    var filtro = (GestaPME.ViewModels.Ferias.FeriasFiltroViewModel)ViewBag.Filtro;
+}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="mb-0">Férias</h2>
+    <a asp-action="Solicitar" class="btn btn-primary"><i class="bi bi-plus"></i> Nova solicitação</a>
+</div>
+<form method="get" class="gp-card mb-3">
+    <div class="row g-2 align-items-end">
+        <div class="col-md-6">
+            <label class="form-label">Funcionário</label>
+            <select name="FuncionarioId" asp-items="filtro.Funcionarios" class="form-select">
+                <option value="">Todos</option>
+            </select>
+        </div>
+        <div class="col-md-4">
+            <label class="form-label">Status</label>
+            <select name="Status" class="form-select">
+                <option value="">Todos</option>
+                @foreach (var s in Enum.GetValues<GestaPME.Models.StatusFerias>()){
+                    <option value="@s" selected="@(filtro.Status == s)">@s</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-2 d-grid">
+            <button class="btn btn-primary">Filtrar</button>
+        </div>
+    </div>
+</form>
+
+@if (Model.TotalItens == 0){
+    <div class="gp-card text-center text-muted">
+        <i class="bi bi-calendar-event" style="font-size:2rem"></i>
+        <p class="mt-2 mb-2">Nenhuma solicitação de férias.</p>
+    </div>
+}
+else{
+    <table class="gp-table">
+        <thead>
+        <tr>
+            <th>Funcionário</th>
+            <th>Início</th>
+            <th>Fim</th>
+            <th>Dias</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var f in Model.Itens){
+            <tr>
+                <td>@f.Funcionario.NomeCompleto</td>
+                <td>@f.DataInicio.ToString("dd/MM/yyyy")</td>
+                <td>@f.DataFim.ToString("dd/MM/yyyy")</td>
+                <td>@f.QuantidadeDias</td>
+                <td>
+                    @switch (f.Status){
+                        case GestaPME.Models.StatusFerias.Solicitada: <span
+                            class="gp-badge gp-badge-warning">Solicitada</span> break;
+                        case GestaPME.Models.StatusFerias.Aprovada: <span
+                            class="gp-badge gp-badge-success">Aprovada</span> break;
+                        case GestaPME.Models.StatusFerias.Rejeitada: <span
+                            class="gp-badge gp-badge-danger">Rejeitada</span> break;
+                        case GestaPME.Models.StatusFerias.Concluida: <span
+                            class="gp-badge gp-badge-info">Concluída</span> break;
+                    }
+                </td>
+                <td><a asp-action="Details" asp-route-id="@f.Id" class="text-muted"><i class="bi bi-eye"></i></a></td>
+            </tr>
+        }
+        </tbody>
+    </table>
+}

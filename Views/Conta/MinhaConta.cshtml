@@ -1,0 +1,10 @@
+@using GestaPME.Services
+@inject IContextoEmpresa Contexto
+@{ ViewData["Title"] = "Minha conta"; }
+<h2>Minha conta</h2>
+<div class="gp-card">
+    <div class="mb-2"><span class="gp-label">Nome</span><br />@Contexto.NomeUsuario</div>
+    <div class="mb-2"><span class="gp-label">E-mail</span><br />@Contexto.EmailUsuario</div>
+    <div class="mb-3"><span class="gp-label">Perfil</span><br />@(Contexto.EhAdministrador ? "Administrador" : "Gestor")</div>
+    <a asp-action="AlterarSenha" class="btn btn-primary">Alterar senha</a>
+</div>

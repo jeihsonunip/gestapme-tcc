@@ -1,0 +1,65 @@
+@using GestaPME.Services
+@inject IContextoEmpresa Contexto
+@{
+    var iniciais = "?";
+    if (!string.IsNullOrWhiteSpace(Contexto.NomeUsuario))
+    {
+        var partes = Contexto.NomeUsuario.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+        iniciais = (partes.Length > 0 ? partes[0][0].ToString() : "") +
+                   (partes.Length > 1 ? partes[1][0].ToString() : "");
+        iniciais = iniciais.ToUpperInvariant();
+    }
+}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] · GestaPME</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap-icons/font/bootstrap-icons.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+<div class="gp-app">
+    <header class="gp-topbar">
+        <div class="d-flex align-items-center gap-3">
+            <span class="gp-brand"><i class="bi bi-hexagon-fill"></i> GestaPME</span>
+        </div>
+        <div class="dropdown">
+            <button class="btn btn-link text-decoration-none d-flex align-items-center gap-2 p-0"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                <span class="gp-user-avatar">@iniciais</span>
+                <span class="text-dark">@Contexto.NomeUsuario</span>
+                <i class="bi bi-caret-down-fill small text-muted"></i>
+            </button>
+            <ul class="dropdown-menu dropdown-menu-end">
+                <li><a class="dropdown-item" asp-controller="Conta" asp-action="MinhaConta">
+                    <i class="bi bi-person"></i> Minha conta
+                </a></li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                    <form asp-controller="Conta" asp-action="Sair" method="post" class="m-0">
+                        <button type="submit" class="dropdown-item text-danger">
+                            <i class="bi bi-box-arrow-right"></i> Sair
+                        </button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </header>
+    <div class="gp-container">
+        <aside class="gp-sidebar">
+            @await Html.PartialAsync("_SidebarNav")
+        </aside>
+        <main class="gp-main">
+            @await Html.PartialAsync("_MensagensTempData")
+            @RenderBody()
+        </main>
+    </div>
+</div>
+<script src="~/lib/jquery/jquery.min.js"></script>
+<script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

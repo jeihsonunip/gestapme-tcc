@@ -1,0 +1,70 @@
+@model GestaPME.ViewModels.Funcionario.FuncionarioFormViewModel
+@{ ViewData["Title"] = "Novo funcionário"; }
+<h2>Novo funcionário</h2>
+<div class="gp-card" style="max-width:860px">
+    <form asp-action="Create" method="post" novalidate>
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+        <div class="mb-3">
+            <label asp-for="NomeCompleto" class="form-label"></label>
+            <input asp-for="NomeCompleto" class="form-control"/>
+            <span asp-validation-for="NomeCompleto" class="text-danger small"></span>
+        </div>
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label asp-for="Cpf" class="form-label"></label>
+                <input asp-for="Cpf" class="form-control" placeholder="000.000.000-00"/>
+                <span asp-validation-for="Cpf" class="text-danger small"></span>
+            </div>
+            <div class="col-md-5 mb-3">
+                <label asp-for="Email" class="form-label"></label>
+                <input asp-for="Email" class="form-control"/>
+                <span asp-validation-for="Email" class="text-danger small"></span>
+            </div>
+            <div class="col-md-3 mb-3">
+                <label asp-for="Telefone" class="form-label"></label>
+                <input asp-for="Telefone" class="form-control"/>
+                <span asp-validation-for="Telefone" class="text-danger small"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label asp-for="DepartamentoId" class="form-label"></label>
+                <select asp-for="DepartamentoId" asp-items="Model.Departamentos" class="form-select">
+                    <option value="">Selecione...</option>
+                </select>
+                <span asp-validation-for="DepartamentoId" class="text-danger small"></span>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label asp-for="CargoId" class="form-label"></label>
+                <select asp-for="CargoId" asp-items="Model.Cargos" class="form-select">
+                    <option value="">Selecione...</option>
+                </select>
+                <span asp-validation-for="CargoId" class="text-danger small"></span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label asp-for="DataAdmissao" class="form-label"></label>
+                <input asp-for="DataAdmissao" type="date" class="form-control"/>
+                <span asp-validation-for="DataAdmissao" class="text-danger small"></span>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label asp-for="DataNascimento" class="form-label"></label>
+                <input asp-for="DataNascimento" type="date" class="form-control"/>
+                <span asp-validation-for="DataNascimento" class="text-danger small"></span>
+            </div>
+        </div>
+        <div class="form-check mb-3">
+            <input asp-for="Ativo" class="form-check-input"/>
+            <label asp-for="Ativo" class="form-check-label"></label>
+        </div>
+        <div class="d-flex justify-content-between">
+            <a asp-action="Index" class="btn btn-link">Cancelar</a>
+            <button type="submit" class="btn btn-primary">Salvar</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial"/> 
+}

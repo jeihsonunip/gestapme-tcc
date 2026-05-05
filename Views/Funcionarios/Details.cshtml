@@ -1,0 +1,62 @@
+@model GestaPME.Models.Funcionario
+@{
+    ViewData["Title"] = Model.NomeCompleto;
+    var ehAdmin = User.IsInRole("Administrador");
+}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="mb-0">@Model.NomeCompleto</h2>
+    <div class="d-flex gap-2">
+        @if (ehAdmin){
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary"><i class="bi bi-pencil"></i>
+                Editar</a>
+        }
+        <a asp-action="Index" class="btn btn-link">Voltar</a>
+    </div>
+</div>
+<div class="row g-3">
+    <div class="col-md-6">
+        <div class="gp-card">
+            <h3>Dados</h3>
+            <div class="mb-2"><span class="gp-label">CPF</span><br/>@Model.CPF</div>
+            <div class="mb-2"><span class="gp-label">E-mail</span><br/>@(Model.Email ?? "—")</div>
+            <div class="mb-2"><span class="gp-label">Telefone</span><br/>@(Model.Telefone ?? "—")</div>
+            <div class="mb-2"><span
+                    class="gp-label">Nascimento</span><br/>@(Model.DataNascimento?.ToString("dd/MM/yyyy") ?? "—")</div>
+            <div class="mb-2"><span class="gp-label">Departamento</span><br/>@Model.Departamento.Nome</div>
+            <div class="mb-2"><span class="gp-label">Cargo</span><br/>@Model.Cargo.Nome</div>
+            <div class="mb-2"><span class="gp-label">Admissão</span><br/>@Model.DataAdmissao.ToString("dd/MM/yyyy")
+            </div>
+            @if (Model.DataDesligamento.HasValue){
+                <div class="mb-2"><span
+                        class="gp-label">Desligamento</span><br/>@Model.DataDesligamento.Value.ToString("dd/MM/yyyy")
+                </div>
+            }
+            <div><span class="gp-label">Status</span><br/>
+                @if (Model.Ativo){
+                    <span class="gp-badge gp-badge-success">Ativo</span>
+                }
+                else{
+                    <span class="gp-badge gp-badge-danger">Inativo</span>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="gp-card">
+            <h3>Últimas férias</h3>
+            @if (Model.Ferias.Count == 0){
+                <p class="text-muted small mb-0">Sem registros.</p>
+            }
+            else{
+                <ul class="list-unstyled mb-0">
+                    @foreach (var f in Model.Ferias){
+                        <li class="py-1">
+                            @f.DataInicio.ToString("dd/MM/yyyy") a @f.DataFim.ToString("dd/MM/yyyy")
+                            <span class="gp-badge gp-badge-info">@f.Status</span>
+                        </li>
+                    }
+                </ul>
+            }
+        </div>
+    </div>
+</div>

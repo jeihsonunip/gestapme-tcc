@@ -1,0 +1,19 @@
+@model GestaPME.Models.Empresa
+@{ ViewData["Title"] = "Empresa"; }
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="mb-0">Empresa</h2>
+    @if (User.IsInRole("Administrador"))
+    {
+        <a asp-action="Edit" class="btn btn-primary"><i class="bi bi-pencil"></i> Editar</a>
+    }
+</div>
+<div class="gp-card">
+    <div class="row g-3">
+        <div class="col-md-6"><span class="gp-label">Razão social</span><br />@Model.RazaoSocial</div>
+        <div class="col-md-6"><span class="gp-label">Nome fantasia</span><br />@(Model.NomeFantasia ?? "—")</div>
+        <div class="col-md-6"><span class="gp-label">CNPJ</span><br />@Model.CNPJ</div>
+        <div class="col-md-6"><span class="gp-label">E-mail</span><br />@(Model.Email ?? "—")</div>
+        <div class="col-md-6"><span class="gp-label">Telefone</span><br />@(Model.Telefone ?? "—")</div>
+        <div class="col-md-12"><span class="gp-label">Endereço</span><br />@(Model.Endereco ?? "—")</div>
+    </div>
+</div>

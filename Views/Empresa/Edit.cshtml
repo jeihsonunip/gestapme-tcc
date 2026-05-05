@@ -1,0 +1,49 @@
+@model GestaPME.ViewModels.Empresa.EmpresaEditViewModel
+@{ ViewData["Title"] = "Editar empresa"; }
+<h2>Editar empresa</h2>
+<div class="gp-card" style="max-width:720px">
+    <form asp-action="Edit" method="post" novalidate>
+        <input type="hidden" asp-for="Id"/>
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+        <div class="mb-3">
+            <label asp-for="RazaoSocial" class="form-label"></label>
+            <input asp-for="RazaoSocial" class="form-control"/>
+            <span asp-validation-for="RazaoSocial" class="text-danger small"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="NomeFantasia" class="form-label"></label>
+            <input asp-for="NomeFantasia" class="form-control"/>
+            <span asp-validation-for="NomeFantasia" class="text-danger small"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Cnpj" class="form-label"></label>
+            <input asp-for="Cnpj" class="form-control" readonly/>
+            <div class="gp-field-hint">O CNPJ não pode ser alterado.</div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label asp-for="Email" class="form-label"></label>
+                <input asp-for="Email" class="form-control"/>
+                <span asp-validation-for="Email" class="text-danger small"></span>
+            </div>
+            <div class="col-md-6 mb-3">
+                <label asp-for="Telefone" class="form-label"></label>
+                <input asp-for="Telefone" class="form-control"/>
+                <span asp-validation-for="Telefone" class="text-danger small"></span>
+            </div>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Endereco" class="form-label"></label>
+            <input asp-for="Endereco" class="form-control"/>
+            <span asp-validation-for="Endereco" class="text-danger small"></span>
+        </div>
+        <div class="d-flex justify-content-between">
+            <a asp-action="Index" class="btn btn-link">Cancelar</a>
+            <button type="submit" class="btn btn-primary">Salvar</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial"/> 
+}

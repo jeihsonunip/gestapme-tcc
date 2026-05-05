@@ -1,0 +1,21 @@
+@{
+    var controller = ViewContext.RouteData.Values["controller"]?.ToString() ?? "";
+    string Active(string c) => controller.Equals(c, StringComparison.OrdinalIgnoreCase) ? "active" : "";
+}
+<nav class="gp-nav">
+    <a class="@Active("Home")" asp-controller="Home" asp-action="Index"><i class="bi bi-house"></i> Início</a>
+    <a class="@Active("Empresa")" asp-controller="Empresa" asp-action="Index"><i class="bi bi-building"></i> Empresa</a>
+    <a class="@Active("Departamentos")" asp-controller="Departamentos" asp-action="Index"><i
+            class="bi bi-diagram-3"></i> Departamentos</a>
+    <a class="@Active("Cargos")" asp-controller="Cargos" asp-action="Index"><i class="bi bi-person-badge"></i>
+        Cargos</a>
+    <a class="@Active("Funcionarios")" asp-controller="Funcionarios" asp-action="Index"><i class="bi bi-people"></i>
+        Funcionários</a>
+    <a class="@Active("Ferias")" asp-controller="Ferias" asp-action="Index"><i class="bi bi-calendar-event"></i> Férias</a>
+    <a class="@Active("Assistente")" asp-controller="Assistente" asp-action="Index"><i class="bi bi-chat-dots"></i>
+        Assistente IA</a>
+    @if (User.IsInRole("Administrador")){
+        <a class="@Active("Usuarios")" asp-controller="Usuarios" asp-action="Index"><i class="bi bi-person-gear"></i>
+            Usuários</a>
+    }
+</nav>

@@ -1,0 +1,29 @@
+@model GestaPME.ViewModels.Usuario.ResetarSenhaViewModel
+@{ ViewData["Title"] = "Redefinir senha"; }
+<h2>Redefinir senha · @Model.NomeUsuario</h2>
+<div class="gp-card" style="max-width:520px">
+    <form asp-action="ResetarSenha" method="post" novalidate>
+        <input type="hidden" asp-for="Id"/>
+        <input type="hidden" asp-for="NomeUsuario"/>
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+        <div class="mb-3">
+            <label asp-for="NovaSenha" class="form-label"></label>
+            <input asp-for="NovaSenha" type="password" class="form-control"/>
+            <div class="gp-field-hint">Comunique ao usuário a nova senha — ele poderá trocá-la em "Minha conta".</div>
+            <span asp-validation-for="NovaSenha" class="text-danger small"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="ConfirmarSenha" class="form-label"></label>
+            <input asp-for="ConfirmarSenha" type="password" class="form-control"/>
+            <span asp-validation-for="ConfirmarSenha" class="text-danger small"></span>
+        </div>
+        <div class="d-flex justify-content-between">
+            <a asp-action="Index" class="btn btn-link">Cancelar</a>
+            <button type="submit" class="btn btn-primary">Redefinir</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial"/> 
+}

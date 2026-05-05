@@ -1,0 +1,86 @@
+@model GestaPME.Util.ResultadoPaginado<GestaPME.Models.Departamento>
+@{
+    ViewData["Title"] = "Departamentos";
+    var busca = ViewBag.Busca as string;
+    var ehAdmin = User.IsInRole("Administrador");
+}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="mb-0">Departamentos</h2>
+    @if (ehAdmin){
+        <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus"></i> Novo departamento</a>
+    }
+</div>
+
+<form method="get" class="gp-card mb-3">
+    <div class="row g-2 align-items-end">
+        <div class="col-md-8">
+            <label class="form-label">Busca por nome</label>
+            <input name="busca" value="@busca" class="form-control"/>
+        </div>
+        <div class="col-md-4 d-flex gap-2">
+            <a asp-action="Index" class="btn btn-link">Limpar</a>
+            <button class="btn btn-primary flex-grow-1">Filtrar</button>
+        </div>
+    </div>
+</form>
+
+@if (Model.TotalItens == 0){
+    <div class="gp-card text-center text-muted">
+        <i class="bi bi-diagram-3" style="font-size:2rem"></i>
+        <p class="mt-2 mb-2">Nenhum departamento cadastrado.</p>
+        @if (ehAdmin){
+            <a asp-action="Create" class="btn btn-primary">Cadastrar primeiro</a>
+        }
+    </div>
+}
+else{
+    <table class="gp-table">
+        <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Descrição</th>
+            @if (ehAdmin){
+                <th style="width:100px">Ações</th>
+            }
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var d in Model.Itens){
+            <tr>
+                <td>@d.Nome</td>
+                <td class="text-muted">@(d.Descricao ?? "—")</td>
+                @if (ehAdmin){
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@d.Id" class="text-muted me-2" title="Editar"><i
+                                class="bi bi-pencil"></i></a>
+                        <form asp-action="Delete" asp-route-id="@d.Id" method="post" class="d-inline"
+                              onsubmit="return confirm('Excluir o departamento @d.Nome?');">
+                            <button type="submit" class="btn btn-link p-0 text-danger" title="Excluir"><i
+                                    class="bi bi-trash"></i></button>
+                        </form>
+                    </td>
+                }
+            </tr>
+        }
+        </tbody>
+    </table>
+    <div class="d-flex justify-content-between align-items-center mt-3">
+        <span class="text-muted small">
+            Mostrando @Model.Itens.Count de @Model.TotalItens
+        </span>
+        <nav>
+            <ul class="pagination pagination-sm mb-0">
+                <li class="page-item @(Model.TemAnterior ? "" : "disabled")">
+                    <a class="page-link" asp-action="Index" asp-route-pagina="@(Model.PaginaAtual - 1)"
+                       asp-route-busca="@busca">«</a>
+                </li>
+                <li class="page-item active"><span class="page-link">@Model.PaginaAtual / @Model.TotalPaginas</span>
+                </li>
+                <li class="page-item @(Model.TemProxima ? "" : "disabled")">
+                    <a class="page-link" asp-action="Index" asp-route-pagina="@(Model.PaginaAtual + 1)"
+                       asp-route-busca="@busca">»</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+}

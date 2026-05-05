@@ -1,0 +1,33 @@
+@model GestaPME.ViewModels.Conta.LoginViewModel
+@{
+    ViewData["Title"] = "Entrar";
+    Layout = "_LayoutPublic";
+}
+<h2 class="mb-1"><i class="bi bi-hexagon-fill text-primary"></i> GestaPME</h2>
+<p class="text-muted mb-4">Acesse sua conta</p>
+
+<form asp-action="Login" method="post" novalidate>
+    <input type="hidden" asp-for="ReturnUrl"/>
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger"
+         style="display:@(ViewData.ModelState.ErrorCount > 0 && !ViewData.ModelState.IsValid ? "block" : "none")"></div>
+
+    <div class="mb-3">
+        <label asp-for="Email" class="form-label"></label>
+        <input asp-for="Email" class="form-control" autocomplete="email"/>
+        <span asp-validation-for="Email" class="text-danger small"></span>
+    </div>
+    <div class="mb-4">
+        <label asp-for="Senha" class="form-label"></label>
+        <input asp-for="Senha" type="password" class="form-control" autocomplete="current-password"/>
+        <span asp-validation-for="Senha" class="text-danger small"></span>
+    </div>
+    <button type="submit" class="btn btn-primary w-100">Entrar</button>
+</form>
+<hr class="my-4"/>
+<p class="text-center small mb-0">
+    Não tem conta? <a asp-action="Cadastro">Cadastre sua empresa</a>
+</p>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial"/> 
+}

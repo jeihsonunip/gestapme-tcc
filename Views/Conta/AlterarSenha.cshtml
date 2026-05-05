@@ -1,0 +1,32 @@
+@model GestaPME.ViewModels.Conta.AlterarSenhaViewModel
+@{ ViewData["Title"] = "Alterar senha"; }
+<h2>Alterar senha</h2>
+<div class="gp-card" style="max-width:520px">
+    <form asp-action="AlterarSenha" method="post" novalidate>
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+        <div class="mb-3">
+            <label asp-for="SenhaAtual" class="form-label"></label>
+            <input asp-for="SenhaAtual" type="password" class="form-control"/>
+            <span asp-validation-for="SenhaAtual" class="text-danger small"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="NovaSenha" class="form-label"></label>
+            <input asp-for="NovaSenha" type="password" class="form-control"/>
+            <div class="gp-field-hint">Mínimo 8 caracteres, com letras e números</div>
+            <span asp-validation-for="NovaSenha" class="text-danger small"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="ConfirmarNovaSenha" class="form-label"></label>
+            <input asp-for="ConfirmarNovaSenha" type="password" class="form-control"/>
+            <span asp-validation-for="ConfirmarNovaSenha" class="text-danger small"></span>
+        </div>
+        <div class="d-flex justify-content-between">
+            <a asp-action="MinhaConta" class="btn btn-link">Cancelar</a>
+            <button type="submit" class="btn btn-primary">Salvar</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial"/> 
+}

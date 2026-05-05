@@ -1,0 +1,46 @@
+@{ ViewData["Title"] = "Assistente IA"; }
+<div class="gp-chat-wrap">
+    <h2 class="mb-1">Assistente IA</h2>
+    <p class="text-muted mb-3">Pergunte em linguagem natural sobre sua empresa.</p>
+
+    <div class="gp-chips">
+        <button type="button" class="gp-chip" data-sugestao="Quantos funcionários estão ativos?">Funcionários ativos?
+        </button>
+        <button type="button" class="gp-chip" data-sugestao="Há funcionários com férias vencidas?">Férias vencidas?
+        </button>
+        <button type="button" class="gp-chip" data-sugestao="Quais funcionários pertencem ao departamento de TI?">
+            Funcionários por depto
+        </button>
+    </div>
+
+    <div id="chatHistorico" class="gp-chat-historico"></div>
+
+    <form id="chatForm" class="d-flex gap-2 mt-3">
+        <textarea id="chatInput" class="form-control" rows="2" placeholder="Digite sua pergunta..."
+                  autofocus></textarea>
+        <button id="chatEnviar" type="submit" class="btn btn-primary" style="min-width:100px">Enviar</button>
+    </form>
+</div>
+
+<template id="tplBubbleUser">
+    <div class="gp-bubble gp-bubble-user">
+        <div class="gp-chat-text"></div>
+    </div>
+</template>
+<template id="tplBubbleBot">
+    <div class="gp-bubble gp-bubble-bot">
+        <div class="gp-chat-text"></div>
+    </div>
+</template>
+<template id="tplBubbleErro">
+    <div class="gp-bubble gp-bubble-erro">
+        <div class="gp-chat-text"></div>
+    </div>
+</template>
+<template id="tplDigitando">
+    <div class="gp-bubble gp-bubble-bot gp-typing"><span></span><span></span><span></span></div>
+</template>
+
+@section Scripts {
+    <script src="~/js/chat.js"></script>
+}

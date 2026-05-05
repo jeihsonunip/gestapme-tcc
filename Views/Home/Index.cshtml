@@ -1,0 +1,85 @@
+@model GestaPME.ViewModels.Home.PainelInicialViewModel
+@{ ViewData["Title"] = "Início"; }
+
+<div class="mb-4">
+    <h2 class="mb-1">Olá, @Model.NomeUsuario.</h2>
+    <p class="text-muted">Aqui está um resumo da sua empresa hoje.</p>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-6 col-md-3">
+        <div class="gp-card gp-stat-card">
+            <div class="gp-stat-value">@Model.TotalFuncionarios</div>
+            <div class="gp-stat-label">Funcionários</div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="gp-card gp-stat-card">
+            <div class="gp-stat-value">@Model.FuncionariosAtivos</div>
+            <div class="gp-stat-label">Ativos</div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="gp-card gp-stat-card">
+            <div class="gp-stat-value">@Model.FuncionariosInativos</div>
+            <div class="gp-stat-label">Inativos</div>
+        </div>
+    </div>
+    <div class="col-6 col-md-3">
+        <div class="gp-card gp-stat-card">
+            <div class="gp-stat-value">@Model.TotalDepartamentos</div>
+            <div class="gp-stat-label">Departamentos</div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3">
+    <div class="col-md-6">
+        <div class="gp-card">
+            <h3>Férias em curso</h3>
+            @if (Model.FeriasEmCurso.Count == 0){
+                <p class="text-muted small mb-0">Ninguém em férias no momento.</p>
+            }
+            else{
+                <ul class="list-unstyled mb-0">
+                    @foreach (var f in Model.FeriasEmCurso){
+                        <li class="d-flex justify-content-between py-1">
+                            <span>@f.Funcionario</span>
+                            <span class="text-muted small">@f.Dias dia(s) · até @f.DataFim.ToString("dd/MM")</span>
+                        </li>
+                    }
+                </ul>
+                <div class="mt-2"><a asp-controller="Ferias" asp-action="Index">Ver todas →</a></div>
+            }
+        </div>
+    </div>
+
+    @if (User.IsInRole("Administrador")){
+        <div class="col-md-6">
+            <div class="gp-card">
+                <h3>Férias pendentes de aprovação</h3>
+                @if (Model.FeriasPendentes.Count == 0){
+                    <p class="text-muted small mb-0">Nenhuma solicitação pendente.</p>
+                }
+                else{
+                    <ul class="list-unstyled mb-0">
+                        @foreach (var f in Model.FeriasPendentes){
+                            <li class="d-flex justify-content-between py-1">
+                                <span>@f.Funcionario</span>
+                                <a asp-controller="Ferias" asp-action="Details" asp-route-id="@f.Id">ver →</a>
+                            </li>
+                        }
+                    </ul>
+                }
+            </div>
+        </div>
+    }
+</div>
+
+<div class="gp-card mt-4">
+    <p class="mb-0 small text-muted">
+        <i class="bi bi-lightbulb"></i> Dica: experimente o
+        <a asp-controller="Assistente" asp-action="Index">Assistente IA</a> —
+        pergunte por exemplo: <em>"Quais funcionários estão ativos no departamento de TI?"</em>
+    </p>
+</div>

@@ -1,0 +1,122 @@
+@model GestaPME.Util.ResultadoPaginado<GestaPME.Models.Funcionario>
+@{
+    ViewData["Title"] = "Funcionários";
+    var filtro = (GestaPME.ViewModels.Funcionario.FuncionarioFiltroViewModel)ViewBag.Filtro;
+    var ehAdmin = User.IsInRole("Administrador");
+}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="mb-0">Funcionários</h2>
+    @if (ehAdmin){
+        <a asp-action="Create" class="btn btn-primary"><i class="bi bi-plus"></i> Novo funcionário</a>
+    }
+</div>
+
+<form method="get" class="gp-card mb-3">
+    <div class="row g-2 align-items-end">
+        <div class="col-md-4">
+            <label class="form-label">Busca (nome ou CPF)</label>
+            <input name="Busca" value="@filtro.Busca" class="form-control"/>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Departamento</label>
+            <select name="DepartamentoId" asp-items="filtro.Departamentos" class="form-select">
+                <option value="">Todos</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Cargo</label>
+            <select name="CargoId" asp-items="filtro.Cargos" class="form-select">
+                <option value="">Todos</option>
+            </select>
+        </div>
+        <div class="col-md-2">
+            <label class="form-label">Status</label>
+            <select name="Status" class="form-select">
+                <option value="">Todos</option>
+                <option value="ativo" selected="@(filtro.Status == "ativo")">Ativos</option>
+                <option value="inativo" selected="@(filtro.Status == "inativo")">Inativos</option>
+            </select>
+        </div>
+        <div class="col-md-1 d-grid">
+            <button class="btn btn-primary">Filtrar</button>
+        </div>
+    </div>
+</form>
+
+@if (Model.TotalItens == 0){
+    <div class="gp-card text-center text-muted">
+        <i class="bi bi-people" style="font-size:2rem"></i>
+        <p class="mt-2 mb-2">Nenhum funcionário encontrado.</p>
+        @if (ehAdmin){
+            <a asp-action="Create" class="btn btn-primary">Cadastrar primeiro</a>
+        }
+    </div>
+}
+else{
+    <table class="gp-table">
+        <thead>
+        <tr>
+            <th>Nome</th>
+            <th>Departamento</th>
+            <th>Cargo</th>
+            <th>Status</th>
+            <th style="width:140px">Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var f in Model.Itens){
+            <tr>
+                <td>
+                    <a asp-action="Details" asp-route-id="@f.Id"
+                       class="text-decoration-none text-dark">@f.NomeCompleto</a>
+                    <div class="small text-muted">@f.CPF</div>
+                </td>
+                <td>@f.Departamento.Nome</td>
+                <td>@f.Cargo.Nome</td>
+                <td>
+                    @if (f.Ativo){
+                        <span class="gp-badge gp-badge-success">Ativo</span>
+                    }
+                    else{
+                        <span class="gp-badge gp-badge-danger">Inativo</span>
+                    }
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@f.Id" class="text-muted me-2" title="Detalhes"><i
+                            class="bi bi-eye"></i></a>
+                    @if (ehAdmin){
+                        <a asp-action="Edit" asp-route-id="@f.Id" class="text-muted me-2" title="Editar"><i
+                                class="bi bi-pencil"></i></a>
+                        <form asp-action="AlternarAtivo" asp-route-id="@f.Id" method="post" class="d-inline"
+                              onsubmit="return confirm('@(f.Ativo ? "Inativar" : "Reativar") @f.NomeCompleto?');">
+                            <button type="submit" class="btn btn-link p-0 text-muted"
+                                    title="@(f.Ativo ? "Inativar" : "Reativar")">
+                                <i class="bi bi-@(f.Ativo ? "toggle-on" : "toggle-off")"></i>
+                            </button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+    <div class="d-flex justify-content-between align-items-center mt-3">
+        <span class="text-muted small">Mostrando @Model.Itens.Count de @Model.TotalItens</span>
+        <nav>
+            <ul class="pagination pagination-sm mb-0">
+                <li class="page-item @(Model.TemAnterior ? "" : "disabled")">
+                    <a class="page-link" asp-action="Index"
+                       asp-all-route-data="@(Context.Request.Query.ToDictionary(kv => kv.Key, kv => kv.Value.ToString()))"
+                       asp-route-pagina="@(Model.PaginaAtual - 1)">«</a>
+                </li>
+                <li class="page-item active"><span class="page-link">@Model.PaginaAtual / @Model.TotalPaginas</span>
+                </li>
+                <li class="page-item @(Model.TemProxima ? "" : "disabled")">
+                    <a class="page-link" asp-action="Index"
+                       asp-all-route-data="@(Context.Request.Query.ToDictionary(kv => kv.Key, kv => kv.Value.ToString()))"
+                       asp-route-pagina="@(Model.PaginaAtual + 1)">»</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+}

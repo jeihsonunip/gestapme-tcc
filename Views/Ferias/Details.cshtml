@@ -1,0 +1,31 @@
+@model GestaPME.Models.Ferias
+@{
+    ViewData["Title"] = "Detalhes de férias";
+    var ehAdmin = User.IsInRole("Administrador");
+}
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2 class="mb-0">Férias · @Model.Funcionario.NomeCompleto</h2>
+    <a asp-action="Index" class="btn btn-link">Voltar</a>
+</div>
+<div class="gp-card">
+    <div class="row g-3 mb-3">
+        <div class="col-md-3"><span class="gp-label">Início</span><br/>@Model.DataInicio.ToString("dd/MM/yyyy")</div>
+        <div class="col-md-3"><span class="gp-label">Fim</span><br/>@Model.DataFim.ToString("dd/MM/yyyy")</div>
+        <div class="col-md-2"><span class="gp-label">Dias</span><br/>@Model.QuantidadeDias</div>
+        <div class="col-md-4"><span class="gp-label">Status</span><br/>@Model.Status</div>
+    </div>
+    <div class="mb-3"><span class="gp-label">Observações</span><br/>@(Model.Observacoes ?? "—")</div>
+
+    @if (ehAdmin && Model.Status == GestaPME.Models.StatusFerias.Solicitada){
+        <div class="d-flex gap-2">
+            <form asp-action="Aprovar" asp-route-id="@Model.Id" method="post"
+                  onsubmit="return confirm('Aprovar estas férias?');">
+                <button class="btn btn-primary"><i class="bi bi-check"></i> Aprovar</button>
+            </form>
+            <form asp-action="Rejeitar" asp-route-id="@Model.Id" method="post"
+                  onsubmit="return confirm('Rejeitar estas férias?');">
+                <button class="btn btn-outline-danger"><i class="bi bi-x"></i> Rejeitar</button>
+            </form>
+        </div>
+    }
+</div>

@@ -1,0 +1,23 @@
+@model GestaPME.ViewModels.Departamento.DepartamentoFormViewModel
+@{ ViewData["Title"] = "Novo departamento"; }
+<h2>Novo departamento</h2>
+<div class="gp-card" style="max-width:720px">
+    <form asp-action="Create" method="post" novalidate>
+        <div asp-validation-summary="ModelOnly" class="alert alert-danger"></div>
+        <div class="mb-3">
+            <label asp-for="Nome" class="form-label"></label>
+            <input asp-for="Nome" class="form-control" />
+            <span asp-validation-for="Nome" class="text-danger small"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="Descricao" class="form-label"></label>
+            <textarea asp-for="Descricao" class="form-control" rows="3"></textarea>
+            <span asp-validation-for="Descricao" class="text-danger small"></span>
+        </div>
+        <div class="d-flex justify-content-between">
+            <a asp-action="Index" class="btn btn-link">Cancelar</a>
+            <button type="submit" class="btn btn-primary">Salvar</button>
+        </div>
+    </form>
+</div>
+@section Scripts { <partial name="_ValidationScriptsPartial" /> }
